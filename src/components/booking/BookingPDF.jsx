@@ -70,7 +70,7 @@ const BookingInvoice = ({ booking }) => (
         <Text style={styles.header}>Natchapol</Text>
         <Text>รหัสการจอง: {booking.id}</Text>
         <Text>ชื่อที่พัก: {booking.Landmark.title}</Text>
-        <Text>วันที่ออกใบเสร็จ {formatDate(new Date())}</Text>
+        <Text>วันที่ออกใบเสร็จ: {formatDate(new Date())}</Text>
       </View>
 
       {/* ตารางแสดงรายละเอียด */}
