@@ -1,10 +1,15 @@
-import { AddorRemoveFavorite, listCamping, listFavorites } from "@/api/Camping";
+import {
+  AddorRemoveFavorite,
+  filterCamping,
+  listCamping,
+  listFavorites,
+} from "@/api/Camping";
 import { create } from "zustand";
 
 //step1 Create Store
 const campingStore = (set, get) => ({
   campings: [],
-  favorites:[],
+  favorites: [],
   actionListCampings: async (id) => {
     try {
       const res = await listCamping(id);
@@ -27,11 +32,11 @@ const campingStore = (set, get) => ({
           : item;
       });
       set({ campings: updatedCamping });
-      const favorites = get().favorites
-      const updatedFavorite = favorites.filter((item)=>{
-        return item.Landmark.id !== campingId
-      })
-      set({favorites: updatedFavorite})
+      const favorites = get().favorites;
+      const updatedFavorite = favorites.filter((item) => {
+        return item.Landmark.id !== campingId;
+      });
+      set({ favorites: updatedFavorite });
       return { success: true, message: res.data.message };
     } catch (error) {
       const err = error.response?.data?.message;
@@ -41,10 +46,19 @@ const campingStore = (set, get) => ({
   actionListFavorites: async (token) => {
     try {
       const res = await listFavorites(token);
-      set({favorites:res.data.result})
+      set({ favorites: res.data.result });
     } catch (error) {
       const err = error.response?.data?.message;
       return { success: false, message: err };
+    }
+  },
+  actionFilter: async (category = "", search = "") => {
+    try {
+      const res = await filterCamping(category, search);
+      console.log('zustand',res.data.result);
+      set({campings:res.data.result})
+    } catch (error) {
+      console.log(error);
     }
   },
 });
